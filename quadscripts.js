@@ -33,6 +33,8 @@ function results() {
   vY = a*Math.pow(vX,2)+b*vX+c*1;
   $("#vertex").text("Vertex is at (" + vX+","+vY+")");
   $("#y-int").text("Y intercept is at (0,"+ c+")");
+  Xcp = 2*vX;
+  $("corres.point").text("Y Corresponding point is at ("+Xcp+","+ c+")");
 
   //$("#corres.point").text("Corresponding point is at ("+vX*2)")";
   
