@@ -22,19 +22,51 @@ function QF() {
   x2=Math.round(x2 * 10000) / 10000;
   $("#solution1").text("X intercept is at "+x1);
   $("#solution2").text("X intercept is at "+x2);
-  console.log(a,b,c);
-  results();
+ 
+  console.log(a,b,c,x1,x2);
   graphQuad();
+  results();
+
+  context.beginPath();
+  context.arc(w/2+x1*k,h/2,3,0,6.28)
+  context.fill();
+
+  context.beginPath();
+  context.arc(w/2+x2*k,h/2,3,0,6.28)
+  context.fill();
+  
 }  // close QF
 
 function results() {
   // finding vertext and displaying symline and yint results
   vX = -(b*1)/(2*a);
   vY = a*Math.pow(vX,2)+b*vX+c*1;
+ vX=vX.toFixed(2);
+ vY=vY.toFixed(2);
   $("#vertex").text("Vertex is at (" + vX+","+vY+")");
-  $("#y-int").text("Y intercept is at (0,"+ c+")");
+ $("#y-int").text("Y intercept is at (0,"+ c+")");
   Xcp = 2*vX;
-  $("corres.point").text("Y Corresponding point is at ("+Xcp+","+ c+")");
+  context.beginPath();
+  context.arc(w/2+vX*k,h/2-vY*k,3,0,6.28)
+  context.fill();
+
+  context.beginPath();
+  context.arc(w/2+Xcp*k,h/2-c*k,3,0,6.28)
+  context.fill();
+
+  $("#corres.point").text("Y Corresponding point is at ("+Xcp+","+ c+")");
+  $("#symmetry").text("Symline is at x="+vX)
+  context.beginPath();
+  context.arc(w/2,h/2-c*k,3,0,6.28);
+  context.fill();
+
+  context.setLineDash([6,3]);
+  context.lineWidth="2"
+  context.strokeStyle="rgba(0,50,300,.3)"
+  context.beginPath();
+  context.moveTo(w/2+vX*k,5);
+  context.lineTo(w/2+vX*k,h+5);
+  context.stroke();
 
   //$("#corres.point").text("Corresponding point is at ("+vX*2)")";
   
@@ -43,6 +75,7 @@ function graphpaper() {
   // the x and y axis drawn
 context.beginPath();
 context.lineWidth=3;
+context.strokeStyle="rgba(0,0,255,.2)";
 context.moveTo(w/2, 0);
 context.lineTo(w/2, h);
 context.stroke();
@@ -50,10 +83,11 @@ context.beginPath();
 context.moveTo(0, h/2);
 context.lineTo(w, h/2);
 context.stroke();
+context.setLineDash([0])
 
   // thin line with a 50% opacity using rgba() 
-  context.lineWidth=1;
-  context.strokeStyle="rgba(0,0,255,.5)";
+
+
 
   //using the direct variation constant, k
   //  here are the vertical and horizontal lines
@@ -68,6 +102,8 @@ context.stroke();
     context.moveTo( 0, h/2+i*k );
     context.lineTo( w, h/2+i*k );
     context.stroke()
+
+
 
   }
     // thin line with a 50% opacity using rgba() 
@@ -104,4 +140,19 @@ function graphQuad () {
     context.lineTo(w/2+nx*k,h/2-ny*k);
     context.stroke();
   }
+}
+
+function zoomIn() {
+  k=k+3;
+  init();
+  graphQuad();
+  results();
+  QF();
+}
+function zoomOut() {
+  k=k-3;
+  init();
+  graphQuad();
+  results();
+  QF();
 }

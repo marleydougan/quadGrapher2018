@@ -66,7 +66,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>                        
         </button>
-        <a class="navbar-brand" href="#">Tess' Solutions</a>
+        <a class="navbar-brand" href="#">Marley's Solutions</a>
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
@@ -81,13 +81,13 @@
   <!--    our main body of divs that are responsive (go from in-line to block when screen is small) -->
   <div class="container-fluid">    
     <div class="row content">
-      <div class="col-sm-2 sidenav">
+      <div class="col-sm-3 sidenav">
         <div class="coeff">
           <p class="formInfo">Coefficients go here :<br>
 
             a = <input size="5" type="text" id="quadA" value="1"> <br>
-            b = <input size="5" type="text" id="linB" value="0"> <br>
-            c = <input size="5" type="text" id="constant" value="0"> <br>
+            b = <input size="5" type="text" id="linB" value="2"> <br>
+            c = <input size="5" type="text" id="constant" value="-2"> <br>
 
             <button class="btn" onclick="QF()" id="submitbutton">Submit Values</button>
           </p>
@@ -99,8 +99,9 @@
             <p id="vertex">Vertex is at</p>
             <p id="symmetry">Symmetry line is at</p>
           </div>
-           <button type="button" class="btn btn-primary btn-sm">+</button>
-           <button type="button" class="btn btn-primary btn-sm">-</button>
+           <button type="button" class="btn btn-primary btn-sm"  onclick="zoomIn()">+</button> 
+           <button type="button" class="btn btn-primary btn-sm" onclick="zoomOut()">-</button>
+          
         </div>
       </div>
       <div class="col-sm-8 text-left"> 
