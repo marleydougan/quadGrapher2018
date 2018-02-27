@@ -7,6 +7,10 @@ function init() {
   w = canvas.width = 600;
   h = canvas.height = 400;
   console.log('canvas is loaded into context',w);
+  canvasOffset = canvas.getBoundingClientRect();
+  offsetX = Math.round(canvasOffset.left),
+  offsetY = Math.round(canvasOffset.top); 
+  canvas.addEventListener("mousemove", doMouseMove, false);
   graphpaper();
 
 }  // close init
@@ -16,13 +20,19 @@ function QF() {
   a = $("#quadA").val();
   b = $("#linB").val();
   c = $("#constant").val();
-  x1=(-b+Math.sqrt(b**2-4*a*c))/(2*a)
-  x1=Math.round(x1 * 10000) / 10000;
-  x2=(-b-Math.sqrt(b**2-4*a*c))/(2*a)
-  x2=Math.round(x2 * 10000) / 10000;
-  $("#solution1").text("X intercept is at "+x1);
-  $("#solution2").text("X intercept is at "+x2);
- 
+  d= b**2-4*a*c;
+  if (d<0) {
+    $("#solution1").text("No x-intercepts");
+    $("#solution2").text("No x-intercepts");
+  }
+  else{
+    x1=(-b+Math.sqrt(b**2-4*a*c))/(2*a);
+    x1=Math.round(x1 * 10000) / 10000;
+    x2=(-b-Math.sqrt(b**2-4*a*c))/(2*a);
+    x2=Math.round(x2 * 10000) / 10000;
+    $("#solution1").text("X intercept is at "+x1);
+    $("#solution2").text("X intercept is at "+x2);
+ }
   console.log(a,b,c,x1,x2);
   graphQuad();
   results();
@@ -62,7 +72,7 @@ function results() {
 
   context.setLineDash([6,3]);
   context.lineWidth="2"
-  context.strokeStyle="rgba(0,50,300,.3)"
+  context.strokeStyle="rgba(300,50,0,.3)"
   context.beginPath();
   context.moveTo(w/2+vX*k,5);
   context.lineTo(w/2+vX*k,h+5);
@@ -132,7 +142,7 @@ function graphQuad () {
     y = c*1+b*x+a*Math.pow(x,2);
     nx = (w/2-(i+1))/k;
     ny =  c*1+b*nx+a*Math.pow(nx,2);
-    console.log(x,y,nx,ny);
+    //console.log(x,y,nx,ny);
     context.beginPath();
     context.lineWidth = 2;
     context.strokeStyle = "Red";
@@ -144,15 +154,35 @@ function graphQuad () {
 
 function zoomIn() {
   k=k+3;
-  init();
-  graphQuad();
-  results();
-  QF();
+  resetCanvas();
 }
 function zoomOut() {
   k=k-3;
+  if(k<10){k=10}
+  resetCanvas(); 
+}
+
+function resetCanvas (){
   init();
   graphQuad();
   results();
   QF();
 }
+
+function doMouseMove(event) {
+
+  resetCanvas();
+    // always know where ther mouse is located
+  mouseX = event.clientX-offsetX;
+  mouseY = event.clientY-offsetY;
+  pointX = (mouseX-w/2)/k;
+  pointY = a*Math.pow(pointX,2)+b*pointX+c*1;
+  pointX =  pointX.toFixed(2);
+  pointY =  pointY.toFixed(2);
+  //console.log(mouseX,mouseY, pointX, pointY, offsetY, offsetX);
+  context.beginPath();
+  context.arc(mouseX, h/2-pointY*k,5,0,2*Math.PI);
+  context.fill(); 
+  $("#point").text("Point on the curve: ("+pointX+","+pointY+")");
+}  // end doMouseMove
+
